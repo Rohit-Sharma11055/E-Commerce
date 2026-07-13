@@ -20,14 +20,14 @@ app.get("/", (req, res) => {
 });
 
 //Routes
-const adminRouter = require("./routes/adminRouter");
-const productRouter = require("./routes/productRouter");
-const cartRouter = require("./routes/cartRouter");
+// const adminRouter = require("./routes/adminRouter");
+// const productRouter = require("./routes/productRouter");
+// const cartRouter = require("./routes/cartRouter");
 const authRouter = require("./routes/authRouter");
 
-app.use("/api/admin", adminRouter);
-app.use("/api/product", productRouter);
-app.use("/api/cart", cartRouter);
+// app.use("/api/admin", adminRouter);
+// app.use("/api/product", productRouter);
+// app.use("/api/cart", cartRouter);
 app.use("/api/auth", authRouter);
 
 
