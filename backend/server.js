@@ -20,14 +20,15 @@ app.get("/", (req, res) => {
 });
 
 //Routes
-// const adminRouter = require("./routes/adminRouter");
-const productRouter = require("./routes/productRouter");
-// const cartRouter = require("./routes/cartRouter");
+
 const authRouter = require("./routes/authRouter");
+const productRouter = require("./routes/productRouter");
+// const adminRouter = require("./routes/adminRouter");
+// const cartRouter = require("./routes/cartRouter");
 
 app.use("/api/auth", authRouter);
-// app.use("/api/admin", adminRouter);
 app.use("/api/products", productRouter);
+// app.use("/api/admin", adminRouter);
 // app.use("/api/cart", cartRouter);
 
 
