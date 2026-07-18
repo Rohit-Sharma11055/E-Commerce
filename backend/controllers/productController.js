@@ -7,7 +7,7 @@ const createProduct = async(req, res) => {
             description,
             category,
             subCategory,
-            price,
+            newPrice,
             oldPrice,
             images,
             sizes,
@@ -19,12 +19,12 @@ const createProduct = async(req, res) => {
             !title||
             !description||
             !category||
-            price === undefined||
+            newPrice === undefined||
             !images
         ){
             return res.status(400).json({
                 success: false,
-                messge: "Please Fill all required fields.",
+                message: "Please Fill all required fields.",
             });
         }
 
@@ -49,14 +49,14 @@ const createProduct = async(req, res) => {
             description,
             category,
             subCategory,
-            price,
+            newPrice,
             oldPrice,
             images,
             sizes,
         });
 
         return res.status(201).json({
-            success: false,
+            success: true,
             message: "Product created successfully.",
             product,
         });

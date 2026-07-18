@@ -24,7 +24,7 @@ const orderedProductSchema = new mongoose.Schema(
             required: true,
             min: 1,
         },
-        price: {
+        newPrice: {
             type: Number,
             required: true,
             min: 0,
