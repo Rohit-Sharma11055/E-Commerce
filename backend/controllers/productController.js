@@ -44,6 +44,21 @@ const createProduct = async(req, res) => {
             });
         }
 
+        //validating newPrice is lower than oldPrice
+        if (newPrice > oldPrice) {
+            return res.status(400).json({
+                success: false,
+                message: "New price cannot be greater than old price."
+            });
+        }
+
+        if (newPrice <= 0 || oldPrice <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Prices must be greater than 0."
+            });
+        }
+
         const product = await Product.create({
             title,
             description,
@@ -121,6 +136,36 @@ const getProductById = async(req, res) => {
 
 const updateProduct = async(req, res) => {
     try{
+        const { newPrice, oldPrice } = req.body;
+
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found.",
+            });
+        }
+
+        // validating that newPrice is lower than oldPrice
+        const updatedNewPrice = newPrice ?? product.newPrice;
+        const updatedOldPrice = oldPrice ?? product.oldPrice;
+
+        if (updatedNewPrice > updatedOldPrice) {
+            return res.status(400).json({
+                success: false,
+                message: "New price cannot be greater than old price."
+            });
+        }
+
+        if (updatedNewPrice <= 0 || updatedOldPrice <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Prices must be greater than 0."
+            });
+        }
+
+
+        //updating product
         const updatedProduct = await Product.findByIdAndUpdate(
             req.params.id,
             req.body,
