@@ -35,7 +35,7 @@ const orderedProductSchema = new mongoose.Schema(
     }
 );
 
-const addressSchema = new Mongoose.Schema(
+const addressSchema = new mongoose.Schema(
     {
         fullName: {
             type: String, 
@@ -53,7 +53,7 @@ const addressSchema = new Mongoose.Schema(
             trim: true,
         },
         city: {
-            typr: String,
+            type: String,
             required: true,
             trim: true,
         },
