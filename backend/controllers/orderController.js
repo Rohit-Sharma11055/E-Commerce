@@ -106,7 +106,7 @@ const checkout = async(req, res) => {
                     shippingAddress,
                     subtotal,
                     discount,
-                    shppingCharge,
+                    shippingCharge,
                     total,
                     paymentMethod: "Cash on Delivery",
                 },
@@ -136,7 +136,7 @@ const checkout = async(req, res) => {
         await session.commitTransaction();
         session.endSession();
 
-        return res.status(201).jaon({
+        return res.status(201).json({
             success: true,
             message: "Order placed successfully.",
             order: order[0],
@@ -166,7 +166,7 @@ const getMyOrders = async(req, res) => {
 
         return res.status(200).json({
             success: true,
-            sount: orders.length,
+            count: orders.length,
             orders,
         });
 
@@ -184,6 +184,32 @@ const getMyOrders = async(req, res) => {
 
 const getOrderById = async(req, res) => {
     try{
+        const {orderId} = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(orderId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Order ID.",
+            });
+        }
+
+        const order = await Order.findOne({
+            _id: orderId,
+            user: req.user._id,
+        });
+
+        if(!order){
+            return res.status(404).json({
+                success: false,
+                message: "Order not found.",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Order fetched successfully.",
+            order,
+        });
 
 
     }catch(err){
@@ -198,6 +224,17 @@ const getOrderById = async(req, res) => {
 
 const getAllOrders = async(req, res) => {
     try{
+        const orders = await Order.find()
+        .populate("user", "name email")
+        .sort({
+            createdAt: -1,
+        });
+
+        return res.status(200).json({
+            success: true,
+            count: orders.length,
+            orders,
+        })
 
 
     }catch(err){
@@ -212,6 +249,81 @@ const getAllOrders = async(req, res) => {
 
 const updateOrderStatus = async(req, res) => {
     try{
+        const {orderId} = req.params;
+        const {orderStatus} = req.body;
+        
+        if(!mongoose.Types.ObjectId.isValid(orderId)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Order Id.",
+            });
+        }
+
+        if(!orderStatus){
+            return res.status(400).json({
+                success: false,
+                message: "Order status is required.",
+            });
+        }
+
+
+        const validStatuses = [
+            "Pending",
+            "Packed",
+            "Shipped",
+            "Delivered",
+            "Cancelled",
+        ];
+
+        if(!validStatuses.includes(orderStatus)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid order status.",
+            });
+        }
+
+
+        const order = await Order.findById(orderId);
+        if(!order){
+            return res.status(404).json({
+                success: false,
+                message: "Order not found.",
+            });
+        }
+
+
+        //Prevent updates after final states
+        if(order.orderStatus === "Delivered" || order.orderStatus === "Cancelled"){
+            return res.status(400).json({
+                success: false,
+                message: `cannot update a ${order.orderStatus} order.`,
+            });
+        }
+
+
+        //Allowed status changes
+        const allowedTransitions = {
+            Pending: ["Packed", "Cancelled"],
+            Packed: ["Shipped", "Cancelled"],
+            Shipped: ["Delivered"],
+        };
+
+        if(!allowedTransitions[order.orderStatus].includes(orderStatus)){
+            return res.status(400).json({
+                success: false,
+                message: `cannot change order status from ${order.orderStatus} to ${orderStatus}`,
+            });
+        }
+
+        
+        order.orderStatus = orderStatus;
+
+        await order.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Order status updated successfully.",
+        });
 
 
     }catch(err){

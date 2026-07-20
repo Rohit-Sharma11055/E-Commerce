@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const addToCart = async(req, res) => {
     try{
         const {productId, size} = req.body;
-
+        
         if(!productId){
             return res.status(400).json({
                 success: false,
@@ -81,6 +81,7 @@ const addToCart = async(req, res) => {
             quantity: 1,
             size: size || null,
         });
+
         
         await cart.save();
 
