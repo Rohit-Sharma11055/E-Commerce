@@ -4,11 +4,10 @@ import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = ({onLogin, API_URL = "http://localhost:4000" }) => {
+const Login = ({onLogin, API_URL = "http://localhost:5000" }) => {
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate(); 
@@ -16,17 +15,16 @@ const Login = ({onLogin, API_URL = "http://localhost:4000" }) => {
     // to fetch profile
     const fetchProfile = async (token) => {
         if(!token) return null;
-        const res = await axios.get(`${API_URL}/api/user/me`, {
+        const res = await axios.get(`${API_URL}/api/auth/me`, {
             headers: {Authorization: `Bearer ${token}` },
         });
         return res.data;
     };
 
     const persistAuth = (profile, token) => {
-        const storage = rememberMe ? localStorage : sessionStorage;
         try{
-            if(token) storage.setItem("token", token)
-            if(profile) storage.setItem("user", JSON.stringify(profile));
+            if(token) localStorage.setItem("token", token)
+            if(profile) localStorage.setItem("user", JSON.stringify(profile));
         }catch(err){
             console.error("Storage Error ", err);
         }
@@ -40,7 +38,7 @@ const Login = ({onLogin, API_URL = "http://localhost:4000" }) => {
 
         try{
             const res = await axios.post(
-                `${API_URL}/api/user/login`,
+                `${API_URL}/api/auth/login`,
                 { email, password },
                 { headers: { "Content-Type": "application/json"} },
             );
@@ -73,7 +71,7 @@ const Login = ({onLogin, API_URL = "http://localhost:4000" }) => {
 
                 if(typeof onLogin === "function") {
                     try{
-                        onLogin(profile, rememberMe, token);
+                        onLogin(profile, token);
                     }catch (callErr) {
                         console.warn("onLogin threw: ", callErr);
                         navigate("/");
@@ -188,18 +186,6 @@ const Login = ({onLogin, API_URL = "http://localhost:4000" }) => {
                 </div>
             </div>
 
-            <div className = {loginStyles.checkboxContainer}>
-                <input 
-                    type = "checkbox"  
-                    id = "remember" 
-                    onChange = {(e) => setRememberMe(e.target.checked)}
-                    className = {loginStyles.checkbox}
-                    required 
-                />
-                <label htmlFor="remember" className = {loginStyles.checkboxLabel}>
-                    Remember Me
-                </label>
-            </div>
 
             <button 
                 type="submit" 

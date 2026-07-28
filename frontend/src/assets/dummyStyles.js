@@ -91,3 +91,54 @@ export const signupStyles = {
   // Spinner for loading state (reusing from login)
   spinner: "animate-spin -ml-1 mr-3 h-5 w-5 text-white"
 };
+
+
+
+
+//Styles for Login Component
+export const loginStyles = {
+  // Page container
+  pageContainer: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-teal-50 to-emerald-50",
+  
+  // Card container
+  cardContainer: "w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden",
+  
+  // Header styles
+  header: "bg-gradient-to-r from-teal-500 to-emerald-600 p-6 text-center",
+  avatar: "w-20 h-20 mx-auto rounded-full bg-white/20 flex items-center justify-center mb-4",
+  headerTitle: "text-2xl font-bold text-white",
+  headerSubtitle: "text-teal-100 mt-2",
+  
+  // Form container
+  formContainer: "p-8",
+  
+  // Error message
+  errorContainer: "mb-6 p-3 bg-red-50 text-red-700 rounded-lg flex items-center",
+  errorIcon: "w-6 h-6 rounded-full bg-red-100 flex items-center justify-center mr-3",
+  errorText: "break-words",
+  
+  // Form elements
+  label: "block text-sm font-medium text-gray-700 mb-2",
+  inputContainer: "relative",
+  inputIcon: "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400",
+  input: "w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-300 focus:border-teal-500",
+  passwordInput: "w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-300 focus:border-teal-500",
+  passwordToggle: "absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600",
+  
+  // Checkbox
+  checkboxContainer: "mb-6 flex items-center",
+  checkbox: "w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500",
+  checkboxLabel: "ml-2 block text-sm text-gray-700",
+  
+  // Button
+  button: "w-full bg-gradient-to-r from-teal-500 to-emerald-600 text-white py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all flex items-center justify-center",
+  buttonDisabled: "opacity-80 cursor-not-allowed",
+  
+  // Sign up link
+  signUpContainer: "mt-8 text-center",
+  signUpText: "text-gray-600",
+  signUpLink: "font-medium text-teal-600 hover:underline",
+  
+  // Spinner for loading state
+  spinner: "animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+};
