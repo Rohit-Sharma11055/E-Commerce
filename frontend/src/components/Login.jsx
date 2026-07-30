@@ -30,11 +30,13 @@ const Login = ({onLogin, API_URL = "http://localhost:5000" }) => {
         }
     };
 
+
     // to login
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError("");
+
 
         try{
             const res = await axios.post(
@@ -66,32 +68,31 @@ const Login = ({onLogin, API_URL = "http://localhost:5000" }) => {
                 }
             }
 
-                if(!profile) profile = {email};
-                persistAuth(profile, token);
+            if(!profile) profile = {email};
+            persistAuth(profile, token);
 
-                if(typeof onLogin === "function") {
-                    try{
-                        onLogin(profile, token);
-                    }catch (callErr) {
-                        console.warn("onLogin threw: ", callErr);
-                        navigate("/");
-                    }
-                }else{
+
+            //check for admin
+            if (profile.role === "admin") {
+                navigate("/admin");
+            } else {
+                navigate("/");
+            }
+
+            if(typeof onLogin === "function") {
+                try{
+                    onLogin(profile, token);
+                }catch (callErr) {
+                    console.warn("onLogin threw: ", callErr);
                     navigate("/");
-                } 
-                setPassword("");
+                }
+            }else{
+                navigate("/");
+            } 
+            setPassword("");
+            setEmail("");
             
-            
-
-            /////// Error is here
-            //
-            //
-            ///
-            /////
-
-
-
-            
+    
         }catch (err) {
             console.error("Login error:", err?.response || err);
             const serverMsg =
@@ -114,7 +115,7 @@ const Login = ({onLogin, API_URL = "http://localhost:5000" }) => {
             </div>
             <h1 className = {loginStyles.headerTitle}>Welcome Back</h1>
             <p className = {loginStyles.headerSubtitle}>
-                Sign in to your Expense Tracker account
+                Sign in to your Shopora account
             </p>
         </div>
 
@@ -149,7 +150,7 @@ const Login = ({onLogin, API_URL = "http://localhost:5000" }) => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className = {loginStyles.input}
-                        placeholder = "your@example.com"
+                        placeholder = "john@example.com"
                         required 
                     />
                 </div>

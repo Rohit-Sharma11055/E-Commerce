@@ -108,12 +108,6 @@ const Navbar = ({user: propUser, setUser, onLogout}) => {
            
            
             {/* user features */}
-            {/* <div>
-
-            </div> */}
-
-            {/* user profile icon */}
-            {/* Right Section */}
             <div className="flex items-center gap-6">
 
                 {/* Common Icons */}
@@ -154,7 +148,7 @@ const Navbar = ({user: propUser, setUser, onLogout}) => {
                         </button>
 
                         <button
-                            onClick={() => navigate("/register")}
+                            onClick={() => navigate("/signup")}
                             className="px-8 py-3 rounded-full bg-lime-300 font-semibold hover:bg-lime-400 transition"
                         >
                             SIGN UP

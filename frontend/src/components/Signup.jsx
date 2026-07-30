@@ -173,7 +173,7 @@ const Signup = ({API_URL = "http://localhost:5000", onSignup}) => {
                                 className = {`${signupStyles.input} ${
                                     errors.email ? " border-red-300" : " border-gray-200"
                                 }`}
-                                placeholder = "your@example.com" 
+                                placeholder = "john@example.com" 
                             />
                         </div>
 

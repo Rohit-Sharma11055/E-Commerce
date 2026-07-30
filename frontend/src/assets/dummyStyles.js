@@ -43,6 +43,101 @@ export const navbarStyles = {
 };
 
 
+//Styles for Sidebar component
+export const sidebarStyles = {
+  // Layout and container styles
+  sidebarContainer: {
+    base: "hidden lg:flex flex-col pt-3 fixed top-16 bottom-0 z-30"
+  },
+  
+  sidebarInner: {
+    base: "bg-white border-r  border-gray-200 shadow-md h-full flex flex-col"
+  },
+  
+  // User profile section
+  userProfileContainer: {
+    base: "p-4 border-b pt-20 md:pt-5 lg:pt-5 xl:pt-5 border-gray-100",
+    collapsed: "px-3",
+    expanded: "px-6"
+  },
+  
+  userInitials: {
+    base: "w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center text-white font-bold text-xl"
+  },
+  
+  // Menu items
+  menuList: {
+    base: "space-y-1 px-2"
+  },
+  
+  menuItem: {
+    base: "relative flex items-center gap-3 py-3 rounded-xl font-medium transition-all duration-200",
+    active: "text-teal-600 bg-teal-50",
+    inactive: "text-gray-600 hover:text-teal-700 hover:bg-gray-50",
+    collapsed: "justify-center px-0 mx-2",
+    expanded: "px-4"
+  },
+  
+  menuIcon: {
+    active: "text-teal-600",
+    inactive: "text-gray-500"
+  },
+  
+  activeIndicator: "absolute right-4 w-2 h-2 bg-teal-400 rounded-full animate-ping",
+  
+  // Toggle button
+  toggleButton: {
+    base: "absolute -right-3 top-12 z-20 w-6 h-6 bg-white border border-gray-300 rounded-full flex items-center justify-center text-gray-500 hover:text-teal-600 hover:border-teal-400 hover:bg-teal-50 transition-all"
+  },
+  
+  // Footer section
+  footerContainer: {
+    base: "border-t border-gray-100 p-4",
+    collapsed: "px-3",
+    expanded: "px-6"
+  },
+  
+  footerLink: {
+    base: "flex items-center gap-3 py-2 rounded-xl font-medium text-gray-600 hover:text-teal-700 hover:bg-gray-50",
+    collapsed: "justify-center"
+  },
+  
+  logoutButton: {
+    base: "flex items-center gap-3 py-2 rounded-xl font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 w-full mt-1",
+    collapsed: "justify-center"
+  },
+  
+  // Mobile sidebar
+  mobileOverlay: "fixed inset-0 z-40 lg:hidden",
+  mobileBackdrop: "absolute inset-0 bg-black/30 backdrop-blur-sm",
+  
+  mobileSidebar: {
+    base: "absolute left-0 top-0 bottom-0 w-4/5 max-w-sm bg-white shadow-2xl rounded-r-2xl overflow-hidden"
+  },
+  
+  mobileHeader: "p-6 flex justify-between items-center border-b border-gray-100",
+  mobileUserContainer: "flex pt-28 items-center gap-3",
+  mobileCloseButton: "p-2 rounded-lg hover:bg-gray-100",
+  
+  mobileMenuList: "space-y-1",
+  mobileMenuItem: {
+    base: "flex items-center gap-4 px-6 py-4 font-medium",
+    active: "text-teal-600 bg-teal-50",
+    inactive: "text-gray-600 hover:bg-gray-50"
+  },
+  
+  mobileFooter: "border-t border-gray-100 p-6",
+  mobileFooterLink: "flex items-center gap-4 py-2 font-medium text-gray-600 hover:text-teal-700",
+  mobileLogoutButton: "flex items-center gap-4 py-2 font-medium text-gray-600 hover:text-red-600 w-full",
+  
+  // Mobile menu button
+  mobileMenuButton: "lg:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-cyan-500 to-teal-600 text-white rounded-full flex items-center justify-center shadow-xl"
+};
+
+// Helper function to combine class names
+export const cn = (...classes) => classes.filter(Boolean).join(" ");
+
+
 
 //Styles for Signup component
 export const signupStyles = {
@@ -93,8 +188,6 @@ export const signupStyles = {
 };
 
 
-
-
 //Styles for Login Component
 export const loginStyles = {
   // Page container
@@ -141,4 +234,100 @@ export const loginStyles = {
   
   // Spinner for loading state
   spinner: "animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+};
+
+
+
+export const styles = {
+  // Layout and Container Styles
+  layout: {
+    root: "min-h-screen bg-gradient-to-br from-gray-50 to-gray-100",
+    mainContainer: (sidebarCollapsed) => 
+      `p-4 pt-6 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'}`,
+  },
+
+  // Header Styles
+  header: {
+    container: "flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4",
+    title: "text-2xl font-bold text-gray-800",
+    subtitle: "text-gray-600",
+  },
+
+  // Stat Card Styles
+  statCards: {
+    grid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-6",
+    card: "bg-white p-5 rounded-2xl shadow-sm border border-gray-100",
+    cardHeader: "flex justify-between items-start",
+    cardTitle: "text-sm text-gray-600",
+    cardValue: "text-2xl font-bold text-gray-800 mt-1",
+    iconContainer: (color) => `bg-${color}-100 p-2 rounded-lg`,
+    icon: (color) => `w-5 h-5 text-${color}-600`,
+    cardFooter: "text-xs text-gray-500 mt-3",
+  },
+
+  // Grid Layout
+  grid: {
+    main: "grid grid-cols-1 lg:grid-cols-3 gap-6",
+    leftColumn: "lg:col-span-2 space-y-6",
+    rightColumn: "lg:col-span-1 lg:-mx-3 space-y-6",
+  },
+
+  // Card Styles
+  cards: {
+    base: "bg-white rounded-2xl p-6 shadow-sm border border-gray-100",
+    header: "flex justify-between items-center mb-6",
+    title: "text-xl font-bold text-gray-800 flex items-center gap-3",
+    titleIcon: "w-6 h-6",
+  },
+
+  // Recent Transactions Card
+  transactions: {
+    cardHeader: "flex justify-between items-center mb-4",
+    cardTitle: "text-md md:text-xl lg:text-xl xl:text-xl font-bold text-gray-800 flex items-center gap-3",
+    refreshButton: "p-2 rounded-lg hover:bg-gray-100 transition-colors",
+    refreshIcon: (loading) => `w-5 h-5 text-gray-500 ${loading ? 'animate-spin' : ''}`,
+    dataStackingInfo: "flex items-center gap-2 text-xs text-gray-500 mb-4 bg-blue-50 p-2 rounded-lg",
+    dataStackingIcon: "w-4 h-4 text-blue-500",
+    listContainer: "space-y-4 max-h-[500px] -mx-5 overflow-y-auto pr-2",
+    transactionItem: "flex items-center lg:flex-col xl:flex-row md:flex-row justify-between p-1 -mx-0 lg:p-4 md:p-4 hover:bg-gray-50 rounded-xl transition-all duration-300 border border-gray-100",
+    iconWrapper: (type) => type === 'income' ? 'bg-teal-100 text-teal-600' : 'bg-orange-100 text-orange-600',
+    icon: "w-4 h-4",
+    details: "min-w-0",
+    description: "font-medium text-gray-800 truncate max-w-[120px]",
+    meta: "text-xs text-gray-500 mt-1",
+    amount: (type) => `font-semibold ${type === 'income' ? 'text-teal-600' : 'text-orange-600'}`,
+    emptyState: "text-center py-8",
+    emptyIconContainer: "w-16 h-16 mx-auto mb-4 rounded-full bg-purple-100 flex items-center justify-center",
+    emptyIcon: "w-8 h-8 text-purple-500",
+    emptyText: "text-gray-600 font-medium",
+    viewAllContainer: "pt-4 border-t border-gray-100",
+    viewAllButton: "w-full flex items-center justify-center gap-2 py-3 text-teal-600 font-medium hover:bg-teal-50 rounded-xl transition-colors",
+  },
+
+  // Spending by Category Card
+  categories: {
+    title: "text-lg md:text-xl lg:text-xl xl:text-xl font-bold text-gray-800 mb-6 flex items-center gap-3",
+    titleIcon: "w-6 h-6 text-cyan-500",
+    list: "space-y-4",
+    categoryItem: "flex items-center md:text-lg lg:text-sm xl:text-lg justify-between",
+    categoryIconContainer: "bg-gray-100 p-2 rounded-lg",
+    categoryIcon: "w-4 h-4 text-gray-600",
+    categoryName: "font-medium text-gray-700",
+    categoryAmount: "font-semibold text-gray-800",
+    summaryContainer: "mt-6 pt-6 border-t border-gray-100",
+    summaryGrid: "grid grid-cols-2 gap-4",
+    summaryIncomeCard: "bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-4",
+    summaryExpenseCard: "bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-4",
+    summaryTitle: "text-sm text-gray-600",
+    summaryValue: "text-sm font-bold text-gray-800",
+  },
+
+  // Color Helpers
+  colors: {
+    transaction: {
+      text: (type) => type === 'income' ? 'text-teal-600' : 'text-orange-600',
+      bg: (type) => type === 'income' ? 'bg-teal-100 text-teal-600' : 'bg-orange-100 text-orange-600',
+    },
+    expenseChange: (change) => change > 0 ? 'text-orange-600' : 'text-green-600',
+  },
 };
