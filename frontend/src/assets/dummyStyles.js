@@ -331,3 +331,38 @@ export const styles = {
     expenseChange: (change) => change > 0 ? 'text-orange-600' : 'text-green-600',
   },
 };
+
+
+//Admin Dashboard Styles
+export const adminDashboardStyles = {
+  // Page
+  page: "min-h-screen bg-gray-50 p-6",
+
+  // Header
+  header: "mb-8",
+  title: "text-3xl font-bold text-gray-900",
+  subtitle: "mt-2 text-gray-500",
+
+  // Stats Cards
+  cardGrid: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8",
+
+  card: "bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow",
+
+  cardTop: "flex items-center justify-between mb-4",
+
+  cardTitle: "text-gray-500 text-sm font-medium",
+
+  cardValue: "mt-2 text-3xl font-bold text-gray-900",
+
+  // Bottom Section
+  bottomGrid: "grid grid-cols-1 xl:grid-cols-2 gap-6",
+
+  sectionCard:
+    "bg-white rounded-2xl shadow-sm border border-gray-100 p-6 min-h-[380px]",
+
+  sectionTitle:
+    "text-xl font-semibold text-gray-900 mb-5 flex items-center gap-2",
+
+  placeholder:
+    "flex items-center justify-center h-[280px] rounded-xl border-2 border-dashed border-gray-200 text-gray-400 text-sm",
+};

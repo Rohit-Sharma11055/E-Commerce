@@ -36,6 +36,7 @@ import Login from "./components/Login"
 import { useState } from "react";
 import Layout from "./components/Layout";
 import Sidebar from "./components/Sidebar";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 
@@ -70,7 +71,20 @@ function App() {
       <Route path="/" element = {<Navbar user={user} setUser={setUser} onLogout={handleLogout} />} />
       <Route path="/signup" element={<Signup onSignup = {handleSignup} />} />
       <Route path="/login" element={<Login onLogin={handleLogin} />} />
-      <Route path="/admin" element={<Layout user={user} setUser={setUser} onLogout={handleLogout} />} />
+      <Route
+                element={
+                    <Layout
+                        user={user}
+                        setUser={setUser}
+                        onLogout={handleLogout}
+                    />
+                }
+            >
+                <Route
+                    path="/admin"
+                    element={<AdminDashboard />}
+                />
+            </Route>
     </Routes>
   );
 }
