@@ -15,7 +15,7 @@ const adminMiddleware = require("../middlewares/adminMiddleware");
 
 
 //Admin routes
-router.post("/", authMiddleware, adminMiddleware, createProduct);
+router.post("/add", authMiddleware, adminMiddleware, createProduct);
 router.put("/:id", authMiddleware, adminMiddleware, updateProduct);
 router.delete("/:id", authMiddleware, adminMiddleware, deleteProduct);
 

@@ -37,7 +37,8 @@ import { useState } from "react";
 import Layout from "./components/Layout";
 import Sidebar from "./components/Sidebar";
 import AdminDashboard from "./pages/AdminDashboard";
-
+import AdminProducts from "./pages/AdminProducts";
+import AddProduct from "./pages/AddProduct";
 
 
 
@@ -71,20 +72,35 @@ function App() {
       <Route path="/" element = {<Navbar user={user} setUser={setUser} onLogout={handleLogout} />} />
       <Route path="/signup" element={<Signup onSignup = {handleSignup} />} />
       <Route path="/login" element={<Login onLogin={handleLogin} />} />
-      <Route
-                element={
-                    <Layout
-                        user={user}
-                        setUser={setUser}
-                        onLogout={handleLogout}
-                    />
-                }
-            >
-                <Route
-                    path="/admin"
-                    element={<AdminDashboard />}
-                />
-            </Route>
+      <Route 
+        element={
+          <Layout
+            user={user}
+            setUser={setUser}
+            onLogout={handleLogout}
+          />
+        }
+      >
+        <Route
+          path="/admin"
+          element={<AdminDashboard />}
+        />
+
+        <Route
+          path="/admin/products"
+          element={<AdminProducts />}
+        />
+
+        <Route 
+          path="/admin/products/add"
+          element={<AddProduct />}
+        />
+
+      </Route>
+
+
+
+
     </Routes>
   );
 }

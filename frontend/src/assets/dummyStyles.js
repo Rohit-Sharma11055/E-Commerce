@@ -5,16 +5,16 @@ export const navbarStyles = {
   container: "flex items-center justify-between px-4 py-3 md:px-8 max-w-7xl mx-auto",
   
   // Logo styles
-  logoContainer: "flex items-center gap-2 cursor-pointer",
-  logoImage: "w-12 h-12 rounded-xl overflow-hidden",
+  logoContainer: "flex items-center cursor-pointer",
+  logoImage: "w-16 h-12 rounded-xl overflow-hidden",
   logoText: "lg:text-2xl md:text-2xl text-1xl text-gray-900 font-[550] lobster-regular",
 
   // Navlinks styles
-    navlinkContainer: "hidden lg:flex items-center gap-5",
+    navlinkContainer: "hidden lg:flex items-center gap-4",
 
     navLink: "flex items-center gap-1 text-gray-500 font-semibold tracking-wide text-sm hover:text-black transition-colors duration-200",
 
-    activeNavLink: "flex items-center gap-1 bg-lime-300 text-black px-5 py-2 rounded-full font-bold tracking-wider text-sm hover:bg-lime-400 transition-all duration-200",
+    activeNavLink: "flex items-center bg-lime-300 text-black px-3 py-2 rounded-full font-bold tracking-wider text-sm hover:bg-lime-400 transition-all duration-200",
 
     newBadge: "bg-lime-300 text-[5px] font-bold px-2 py-0.5 rounded-full",
   
@@ -365,4 +365,45 @@ export const adminDashboardStyles = {
 
   placeholder:
     "flex items-center justify-center h-[280px] rounded-xl border-2 border-dashed border-gray-200 text-gray-400 text-sm",
+};
+
+
+//Admin Product Styles
+export const productStyles = {
+
+  page: "min-h-screen bg-gray-50 p-6",
+
+  header: "flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8",
+
+  title: "text-3xl font-bold text-gray-900",
+
+  subtitle: "text-gray-500 mt-2",
+
+  addButton:
+    "flex items-center gap-2 bg-lime-300 hover:bg-lime-400 px-5 py-3 rounded-xl font-semibold transition",
+
+  topBar:
+    "flex flex-col md:flex-row gap-4 justify-between items-center mb-8",
+
+  searchContainer:
+    "relative flex-1 w-full",
+
+  searchIcon:
+    "absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5",
+
+  searchInput:
+    "w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-lime-300",
+
+  select:
+    "w-full md:w-60 px-4 py-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-lime-300",
+
+  grid:
+    "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6",
+
+  input:
+    "w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-lime-300",
+
+  textarea:
+    "w-full px-4 py-3 rounded-xl border border-gray-200 resize-none focus:outline-none focus:ring-2 focus:ring-lime-300",
+
 };

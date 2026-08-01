@@ -49,6 +49,7 @@ const productSchema = new mongoose.Schema(
         oldPrice: {
             type: Number,
             default: null,
+            min: 0,
         },
         images: [
             {

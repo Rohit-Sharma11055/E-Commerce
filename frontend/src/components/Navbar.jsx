@@ -58,7 +58,7 @@ const Navbar = ({user: propUser, setUser, onLogout}) => {
                 className={navbarStyles.logoContainer}
             >
                 <div className = {navbarStyles.logoImage}>
-                    <img src={img1} alt="logo" />
+                    <img src={img1} alt="logo" className='h-12 w-16' />
                 </div>
                 <span className = {navbarStyles.logoText}>SHOPORA</span>
             </div>
