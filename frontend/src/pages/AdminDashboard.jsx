@@ -26,7 +26,6 @@ const AdminDashboard = () => {
     const fetchDashboardStats = async () => {
         try {
             setLoading(true);
-
             const token = localStorage.getItem("token");
 
             const [productRes, orderRes] = await Promise.all([

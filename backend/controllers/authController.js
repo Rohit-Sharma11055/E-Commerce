@@ -80,6 +80,13 @@ const loginUser = async(req, res) => {
                 role: "admin",
             });
 
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                maxAge: 36000,
+            });
+
             return res.status(200).json({
                 success: true,
                 message: "Admin Login Successfully.",

@@ -23,26 +23,15 @@ const AdminProductCard = ({product, onEdit, onDelete,}) => {
 
             {/* Product Details */}
             <div className="p-5">
-
-                <h2 className="text-lg font-semibold text-gray-900 truncate">
-                    {product.title}
-                </h2>
-
-                <p className="text-sm text-gray-500 mt-1">
-                    {product.category}
-                </p>
+                <h2 className="text-lg font-semibold text-gray-900 truncate">{product.title}</h2>
+                <p className="text-sm text-gray-500 mt-1">{product.category}</p>
 
                 <div className="flex justify-between items-center mt-4">
-
                     <div>
-                        <p className="text-xl font-bold text-gray-900">
-                            ₹{product.newPrice}
-                        </p>
+                        <p className="text-xl font-bold text-gray-900">₹{product.newPrice}</p>
 
                         {product.oldPrice && (
-                            <p className="text-sm text-gray-400 line-through">
-                                ₹{product.oldPrice}
-                            </p>
+                            <p className="text-sm text-gray-400 line-through">₹{product.oldPrice}</p>
                         )}
                     </div>
 
@@ -58,10 +47,9 @@ const AdminProductCard = ({product, onEdit, onDelete,}) => {
 
                 </div>
 
-                {/* Buttons */}
 
+                {/* Control Buttons */}
                 <div className="flex gap-3 mt-6">
-
                     <button
                         onClick={() => onEdit(product)}
                         className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl transition"

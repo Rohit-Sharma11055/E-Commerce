@@ -377,6 +377,8 @@ export const productStyles = {
 
   title: "text-3xl font-bold text-gray-900",
 
+  importButton: "flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-medium transition shadow-sm",
+
   subtitle: "text-gray-500 mt-2",
 
   addButton:

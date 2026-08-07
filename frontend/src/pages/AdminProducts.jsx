@@ -41,7 +41,7 @@ const AdminProducts = () => {
     };
 
 
-    //for serch functionality
+    //for search functionality
     const filteredProducts = products.filter((product) => {
 
         const matchesSearch = product.title

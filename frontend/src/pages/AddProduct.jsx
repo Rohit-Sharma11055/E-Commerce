@@ -5,9 +5,19 @@ import { productStyles } from "../assets/dummyStyles";
 import axios from "axios";
 
 const AddProduct = () => {
+    const API_URL = "http://localhost:5000";
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [showImportModal, setShowImportModal] = useState(false);
+    const [importLoading, setImportLoading] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [productsJson, setProductsJson] = useState(null);
+    const [folderSummary, setFolderSummary] = useState({
+        products: 0,
+        images: 0,
+    });
+    const [importError, setImportError] = useState("");
 
     const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
     const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -81,7 +91,7 @@ const AddProduct = () => {
             const token = localStorage.getItem("token");
 
             await axios.post(
-                "http://localhost:5000/api/products/add",
+                `&{API_URL}/api/products/add`,
                 formData,
                 {
                     headers: {
@@ -165,6 +175,119 @@ const AddProduct = () => {
         }));
     };
 
+    const handleBulkImport = async () => {
+        if (!productsJson) {
+            alert("Please select a valid folder.");
+            return;
+        }
+
+        try {
+            setImportLoading(true);
+            setImportError("");
+
+            // Get JWT
+            const token = localStorage.getItem("token");
+
+            // Create image lookup table
+            const imageMap = {};
+
+            selectedFiles.forEach((file) => {
+                if (file.type.startsWith("image/")) {
+                    imageMap[file.name] = file;
+                }
+            });
+
+            // Clone JSON products
+            const products = structuredClone(productsJson);
+
+            // Upload every image to Cloudinary
+            for (let i = 0; i < products.length; i++) {
+
+                const product = products[i];
+
+                if (!Array.isArray(product.images)) {
+                    throw new Error(
+                        `Product ${i + 1}: Images must be an array.`
+                    );
+                }
+
+                const uploadedImages = await Promise.all(
+
+                    product.images.map(async (imageName) => {
+
+                        const imageFile = imageMap[imageName];
+
+                        if (!imageFile) {
+                            throw new Error(
+                                `Product ${i + 1}: Missing image "${imageName}".`
+                            );
+                        }
+
+                        return await uploadImageToCloudinary(imageFile);
+
+                    })
+
+                );
+
+                product.images = uploadedImages;
+            }
+
+            // Send to backend
+            const response = await axios.post(
+                `${API_URL}/api/products/bulk`,
+                {
+                    products,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            alert(response.data.message);
+
+            // Refresh product list if available
+            if (typeof fetchProducts === "function") {
+                fetchProducts();
+            }
+
+            // Reset modal
+            setShowImportModal(false);
+            setSelectedFiles([]);
+            setProductsJson(null);
+            setFolderSummary({
+                products: 0,
+                images: 0,
+            });
+            setImportError([]);
+
+        } catch (err) {
+
+            console.error(err);
+
+            if (err.response?.data?.errors) {
+
+                setImportErrors(err.response.data.errors);
+
+            } else {
+
+                alert(
+                    err.response?.data?.message ||
+                    err.message ||
+                    "Bulk Import Failed."
+                );
+
+            }
+
+        } finally {
+
+            setImportLoading(false);
+
+        }
+    };
+
 
     //Upload Image
     const uploadImage = async (file) => {
@@ -203,14 +326,96 @@ const AddProduct = () => {
         }));
     };
 
+
+    const handleFolderSelect = async (e) => {
+        const files = Array.from(e.target.files);
+
+        setImportError("");
+        setSelectedFiles(files);
+        setProductsJson(null);
+        setFolderSummary({
+            products: 0,
+            images: 0,
+        });
+
+        if (files.length === 0) return;
+
+        // Find products.json
+        const jsonFile = files.find(
+            (file) => file.name === "products.json"
+        );
+
+        if (!jsonFile) {
+            setImportError("products.json not found.");
+            return;
+        }
+
+        try {
+            const text = await jsonFile.text();
+            const products = JSON.parse(text);
+
+            if (!Array.isArray(products)) {
+                setImportError("products.json must contain an array.");
+                return;
+            }
+
+            const imageFiles = files.filter(file =>
+                file.type.startsWith("image/")
+            );
+
+            setProductsJson(products);
+
+            setFolderSummary({
+                products: products.length,
+                images: imageFiles.length,
+            });
+
+        } catch (err) {
+            console.error(err);
+            setImportError("Invalid JSON file.");
+        }
+    };
+
+    const uploadImageToCloudinary = async (file) => {
+        const data = new FormData();
+
+        data.append("file", file);
+        data.append("upload_preset", UPLOAD_PRESET);
+
+        const response = await axios.post(
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            data
+        );
+
+        return response.data.secure_url;
+    };
+
     return (
         <div className={productStyles.page}>
 
             {/* Header */}
             <div className={productStyles.header}>
-                <div>
-                    <h1 className={productStyles.title}>Add Product</h1>
-                    <p className={productStyles.subtitle}>Create a new product for your store.</p>
+                <div className="flex justify-between items-start w-full">
+
+                    <div>
+                        <h1 className={productStyles.title}>
+                            Add Product
+                        </h1>
+
+                        <p className={productStyles.subtitle}>
+                            Create a new product for your store.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setShowImportModal(true)}
+                        className={productStyles.importButton}
+                    >
+                        <Upload size={18} />
+                        <span>Bulk Import</span>
+                    </button>
+
                 </div>
             </div>
 
@@ -417,6 +622,117 @@ const AddProduct = () => {
                     </button>
                 </div>
             </form>
+
+
+            {/*Bulk Import Dailog box*/}
+            {showImportModal && (
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-8 relative">
+
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setShowImportModal(false)}
+                            className="absolute top-5 right-5 text-gray-400 hover:text-black text-2xl"
+                        >
+                            ×
+                        </button>
+
+                        <h2 className="text-3xl font-bold">
+                            Bulk Import Products
+                        </h2>
+
+                        <p className="text-gray-500 mt-2">
+                            Select a folder containing your
+                            <span className="font-semibold"> products.json </span>
+                            file and all product images.
+                        </p>
+
+                        <label className="mt-8 border-2 border-dashed border-gray-300 rounded-2xl h-64 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition">
+
+                            <Upload size={60} className="text-gray-400" />
+
+                            <p className="text-xl font-semibold mt-5">
+                                Click to Select Folder
+                            </p>
+
+                            <p className="text-gray-500 mt-2">
+                                Folder should contain products.json and images.
+                            </p>
+
+                            <input
+                                type="file"
+                                hidden
+                                webkitdirectory=""
+                                directory=""
+                                multiple
+                                onChange={handleFolderSelect}
+                            />
+
+                        </label>
+
+
+                        {importError && (
+                            <div className="mt-6 rounded-xl bg-red-50 border border-red-200 p-4 text-red-600">
+                                {importError}
+                            </div>
+                        )}
+
+                        {productsJson && (
+                            <div className="mt-6 rounded-xl bg-green-50 border border-green-200 p-5">
+
+                                <h3 className="font-semibold text-lg">
+                                    Folder Loaded Successfully
+                                </h3>
+
+                                <div className="mt-3 space-y-2">
+
+                                    <p>
+                                        ✅ products.json Found
+                                    </p>
+
+                                    <p>
+                                        📦 Products Found:
+                                        <strong> {folderSummary.products}</strong>
+                                    </p>
+
+                                    <p>
+                                        🖼 Images Found:
+                                        <strong> {folderSummary.images}</strong>
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        )}
+
+                        <div className="flex justify-end gap-4 mt-8">
+
+                            <button
+                                onClick={() => setShowImportModal(false)}
+                                className="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100"
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                disabled={!productsJson}
+                                onClick={handleBulkImport}
+                                className={`px-6 py-3 rounded-xl text-white ${
+                                    productsJson
+                                        ? "bg-lime-500 hover:bg-lime-600"
+                                        : "bg-gray-400 cursor-not-allowed"
+                                }`}
+                            >
+                                Continue
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            )}
         </div>
     );
 }

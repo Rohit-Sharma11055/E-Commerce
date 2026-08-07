@@ -86,6 +86,111 @@ const createProduct = async(req, res) => {
 };
 
 
+const bulkCreateProducts = async(req, res) => {
+    try{
+        const {products} = req.body;
+
+        //validate request
+        if(!products || !Array.isArray(products)){
+            return res.status(400).json({
+                success: false,
+                message: "Products must be an array.",
+            });
+        }
+
+        if(products.length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "Products array cannot be empty.",
+            });
+        }
+
+        const errors = [];
+
+        //Validate every product
+        for(let i = 0; i < products.length; i++){
+            const product = products[i];
+
+            const{
+                title,
+                description,
+                category,
+                subCategory,
+                newPrice,
+                oldPrice,
+                images,
+                sizes,
+            } = product;
+
+            //Required Fields
+            if(
+                !title ||
+                !description ||
+                !category ||
+                newPrice === undefined ||
+                !images
+            ){
+                errors.push({
+                    product: i + 1,
+                    message: "Please fill all required fields.",
+                });
+            }
+
+            //Images
+            if(!Array.isArray(images) || images.length === 0){
+                errors.push({
+                    product: i + 1,
+                    message: "At least one image is required.",
+                });
+            }
+
+            //Sizes
+            if(sizes && !Array.isArray(sizes)){
+                errors.push({
+                    product: i + 1,
+                    message: "Sizes must be an array.",
+                });
+            }
+
+            //Prices
+            if(oldPrice != null && newPrice > oldPrice){
+                errors.push({
+                    product: i + 1,
+                    message: "New Price cannot be greater than old Price.",
+                });
+            }
+        }
+
+        //If any validation failed
+        if(errors.length > 0){
+            return res.status(400).json({
+                success: false,
+                message: "Bulk Import Failed.",
+                errors,
+            });
+        }
+
+
+        //Insert all products
+        const createdProducts = await Product.insertMany(products);
+
+        return res.status(201).json({
+            success: false,
+            message: `${createdProducts.length} products imported successfully.`,
+            products: createdProducts,
+        });
+
+
+    }catch(err){
+        console.error(err);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error.",
+        });
+    }
+}
+
+
 const getAllProducts = async(req, res) => {
     try{
         const products = await Product.find();
@@ -228,6 +333,7 @@ const deleteProduct = async(req, res) => {
 
 module.exports = {
     createProduct,
+    bulkCreateProducts,
     getAllProducts,
     getProductById,
     updateProduct,

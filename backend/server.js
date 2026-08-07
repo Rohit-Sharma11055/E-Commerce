@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const {connectDB} = require("./config/db");
+const cookieParser = require("cookie-parser");
 
 //Load .env Variables
 dotenv.config();
@@ -11,8 +12,17 @@ connectDB();
 
 //Initialising express
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
+}
+app.use(cors(corsOptions));
+
 app.use(express.json());
+app.use(cookieParser());
 
 //Test Route
 app.get("/", (req, res) => {

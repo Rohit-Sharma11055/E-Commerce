@@ -16,7 +16,9 @@ const Login = ({onLogin, API_URL = "http://localhost:5000" }) => {
     const fetchProfile = async (token) => {
         if(!token) return null;
         const res = await axios.get(`${API_URL}/api/auth/me`, {
-            headers: {Authorization: `Bearer ${token}` },
+            headers: {Authorization: `Bearer ${token}`,
+            withCredentials: true,
+        },
         });
         return res.data;
     };
@@ -42,7 +44,9 @@ const Login = ({onLogin, API_URL = "http://localhost:5000" }) => {
             const res = await axios.post(
                 `${API_URL}/api/auth/login`,
                 { email, password },
-                { headers: { "Content-Type": "application/json"} },
+                { headers: { "Content-Type": "application/json"},
+                    withCredentials: true, 
+                },
             );
             const data = res.data || {};
             const token = data.token || null;
